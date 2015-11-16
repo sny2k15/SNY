@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<components:SNYView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:components="components.*"
+					creationComplete="init()"
+					viewActivate="viewActivateHandler(event)"
+					viewDeactivate="viewDeactivateHandler(event)"
+					showBackButton="true">
+	<fx:Script>
+		<![CDATA[
+			import components.SNYPopUp;
+			
+			import dao.NamaskarDAO;
+			
+			import model.Namaskar;
+			import model.Person;
+			
+			import mx.utils.ObjectUtil;
+			
+			import scripts.SNYAppData;
+			import scripts.SNYConstants;
+			import scripts.SNYTransitions;
+			
+			import spark.events.ViewNavigatorEvent;
+			import spark.transitions.SlideViewTransition;
+			import spark.transitions.SlideViewTransitionMode;
+			import spark.transitions.ViewTransitionBase;
+			import spark.transitions.ViewTransitionDirection;
+			
+			[Bindable] private var totalCount:int = 0;
+			
+			private var alert:SNYPopUp;
+			private var person:Person; 
+			private var namaskarDAO:NamaskarDAO = new NamaskarDAO();
+			
+			public function init():void
+			{
+				person = data as Person;				
+				loadList();
+			}
+			
+			private function loadList():void
+			{
+				totalCount = 0;
+				SNYAppData.NAMASKARS = namaskarDAO.findNamaskars(person.personId);		
+				for each(var namaskar:Namaskar in SNYAppData.NAMASKARS)
+				{
+					totalCount += namaskar.count;
+				}
+			}
+			
+			protected function CountClickHandler(event:MouseEvent):void
+			{
+				navigator.pushView(CountView, person);
+			}
+			
+			protected function editUserData(event:MouseEvent):void
+			{
+				navigator.pushView(RegisterView, person);
+				SNYAppData.ACTION_TITLE = SNYConstants.UPDATE;
+			}
+			
+			protected function resetCountHandler(event:MouseEvent):void
+			{
+				alert = new SNYPopUp();
+				alert.title = "Message ";
+				alert.message = "Count for "+dateTime.selectedDate.toString()+" has be given.\n Please select the appropriate date and update !!!";
+				alert.addEventListener("CANCEL", cancelClickListner);			
+				alert.addEventListener("OK", okClickListener);
+				alert.open(this, false);
+			}
+			
+			public function cancelClickListner(event:Event):void
+			{				
+				alert.close(false);
+			}
+			
+			public function okClickListener(event:Event):void
+			{			
+				alert.close(true);	
+				namaskarDAO.deleteNamaskars(person.personId);
+				loadList();
+			}
+			
+			protected function viewActivateHandler(event:ViewNavigatorEvent):void
+			{
+				SNYTransitions.setSlideTransition(navigator);				
+			}
+			
+			protected function viewDeactivateHandler(event:ViewNavigatorEvent):void
+			{
+				
+			}
+			
+			protected function editCountData(event:MouseEvent):void
+			{
+				navigator.pushView(CountView, event.currentTarget.selectedItem as Namaskar);
+			}
+			
+			protected function QuickAddCount(event:MouseEvent):void
+			{
+				var selectedDate:Date = new Date(dateTime.selectedDate.fullYear, dateTime.selectedDate.month, dateTime.selectedDate.date);
+				var hasDateUsed:Boolean = false;
+				for each(var existingNamaskar:Namaskar in SNYAppData.NAMASKARS)
+				{
+					var existingDate:Date = new Date(existingNamaskar.dateTime.fullYear, existingNamaskar.dateTime.month, existingNamaskar.dateTime.date);
+					if(ObjectUtil.dateCompare(existingDate, selectedDate)==0)
+					{
+						hasDateUsed = true;
+						break;
+					}
+				}
+				if(hasDateUsed)
+				{
+					alert = new SNYPopUp();
+					alert.title = "Message ";
+					alert.message = "Count for "+dateTime.selectedDate.toString()+" has be given.\n Please select the appropriate date and update !!!";
+					alert.showCancelButton = false;
+					alert.addEventListener("OK", updateCountListener);
+					alert.open(this, false);
+				}
+				else
+				{
+					var namaskar:Namaskar = new Namaskar();
+					namaskar.dateTime = selectedDate;
+					namaskar.count = parseInt(count.text);
+					namaskar.personId = person.personId;
+					var namaskarDAO:NamaskarDAO = new NamaskarDAO();
+					namaskarDAO.addNamaskar(namaskar);
+					SNYAppData.NAMASKARS.addItem(namaskar);
+					count.text = "";
+				}
+			}
+			
+			protected function updateCountListener(event:Event):void
+			{
+				alert.close(true);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:BorderContainer width="95%" height="95%" horizontalCenter="0" verticalCenter="0" dropShadowVisible="true">
+		<s:VGroup width="98%" height="98%" gap="30" horizontalAlign="center" horizontalCenter="0"
+				  verticalCenter="0">
+			<s:HGroup width="100%" height="20%" verticalCenter="0" horizontalCenter="0" horizontalAlign="center"
+					  paddingBottom="{SNYAppData.PADDING}"  paddingLeft="{SNYAppData.PADDING}"
+					  paddingRight="{SNYAppData.PADDING}" paddingTop="{SNYAppData.PADDING}">
+				<s:VGroup width="30%" gap="{SNYAppData.VSPACE}" click="CountClickHandler(event)">
+					<s:Image width="100%" height="100%">
+						<s:source>
+							<s:MultiDPIBitmapSource source160dpi="@Embed('assets/dpi160/add_count.png')"
+													source240dpi="@Embed('assets/dpi240/add_count.png')"
+													source320dpi="@Embed('assets/dpi320/add_count.png')"/>
+						</s:source>
+					</s:Image>
+					<s:Label width="100%" height="100%" text="{SNYConstants.ADD_COUNT}" textAlign="center"/>
+				</s:VGroup>
+				<s:VGroup width="30%" gap="{SNYAppData.VSPACE}" click="editUserData(event)">
+					<s:Image width="100%" height="100%">
+						<s:source>
+							<s:MultiDPIBitmapSource source160dpi="@Embed('assets/dpi160/edit_user.png')"
+													source240dpi="@Embed('assets/dpi240/edit_user.png')"
+													source320dpi="@Embed('assets/dpi320/edit_user.png')"/>
+						</s:source>
+					</s:Image>
+					<s:Label width="100%" height="100%" text="{SNYConstants.EDIT_PROFILE}" textAlign="center"/>
+				</s:VGroup>
+				<s:VGroup width="30%" gap="{SNYAppData.VSPACE}" click="resetCountHandler(event)">
+					<s:Image width="100%" height="100%">
+						<s:source>
+							<s:MultiDPIBitmapSource source160dpi="@Embed('assets/dpi160/reset.png')"
+													source240dpi="@Embed('assets/dpi240/reset.png')"
+													source320dpi="@Embed('assets/dpi320/reset.png')"/>
+						</s:source>
+					</s:Image>
+					<s:Label width="100%" height="100%" text="{SNYConstants.RESET_COUNT}" textAlign="center"/>
+				</s:VGroup>
+			</s:HGroup>
+			<s:HGroup width="90%" verticalCenter="0" horizontalCenter="0" id="countHGroup"
+					  horizontalAlign="right" gap="{SNYAppData.VSPACE}" color="#4734F2"
+					  paddingBottom="{SNYAppData.PADDING}"  paddingLeft="{SNYAppData.PADDING}"
+					  paddingRight="{SNYAppData.PADDING}" paddingTop="{SNYAppData.PADDING}">
+				<s:Label text="{SNYConstants.TOTAL_COUNT}" textAlign="right"/>
+				<s:Label text="{totalCount}"/>
+			</s:HGroup>
+			<s:List height="100%" width="100%" id="dateTimeCountList" dataProvider="{SNYAppData.NAMASKARS}" click="editCountData(event)">
+				<s:itemRenderer>
+					<fx:Component>
+						<s:ItemRenderer>
+							<fx:Script>
+								<![CDATA[
+									override public function set data(value:Object):void {
+										if(value!=null)
+										{
+											dateTime.text = value.dateTime;
+											count.text = value.count;	
+										}										
+									}
+								]]>
+							</fx:Script>
+							<s:HGroup gap="20" width="100%"
+									  paddingBottom="20" paddingLeft="20" paddingRight="20" paddingTop="20" >
+								<s:Label id="dateTime" width="100%"/>
+								<s:Label id="count"/>
+							</s:HGroup>
+						</s:ItemRenderer>
+					</fx:Component>
+				</s:itemRenderer>
+			</s:List>
+			<s:VGroup id="quickCountHGroup" width="90%" height="20%" color="#4734F2"
+					  gap="{SNYAppData.VSPACE}" horizontalAlign="center" horizontalCenter="0"
+					  paddingBottom="{SNYAppData.PADDING}" paddingLeft="{SNYAppData.PADDING}"
+					  paddingRight="{SNYAppData.PADDING}" paddingTop="{SNYAppData.PADDING}"
+					  verticalAlign="middle" verticalCenter="621">
+				<s:DateSpinner id="dateTime" height="20%"/>
+				<s:HGroup width="{dateTime.width}" horizontalAlign="center" verticalAlign="middle">
+					<s:TextInput width="120" id="count"/>
+					<components:SNYButton label="Add" click="QuickAddCount(event)"/>	
+				</s:HGroup>				
+			</s:VGroup>
+		</s:VGroup>
+	</s:BorderContainer>
+</components:SNYView>

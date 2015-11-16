@@ -1,0 +1,74 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace ns "http://www.flextras.com/mxml";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+global
+{
+	fontFamily: "Myriad Pro";
+	chromeColor: #fb5a03;
+}
+
+s|ActionBar
+{
+	chromeColor: #fb5a03;
+}
+
+s|TabbedViewNavigator #tabBar
+{
+	chromeColor: #fb5a03;
+	color: #000000;
+	iconPlacement: center;
+}
+
+s|RadioButton
+{
+	skinClass: ClassReference("components.SNYRadioButton");
+}
+
+s|TextInput
+{
+	skinClass: ClassReference("spark.skins.mobile.TextInputSkin")
+}
+
+ns|AutoCompleteComboBoxMobile
+{
+	skinClass: ClassReference("com.flextras.mobile.autoCompleteComboBox.skins.AutoCompleteComboBoxMobileSkin_4");
+}
+
+s|Panel
+{
+	color: #FFFFFF;
+	skinClass: ClassReference("skins.PanelSkin");
+}
+
+Panel Button
+{
+	chromeColor: #0C1C41;
+	textShadowColor: #000000;
+}
+
+Panel Button:down
+{
+	chromeColor: #000000;
+}
+
+Panel #titleDisplay
+{
+	fontSize: 20;
+}
+
+.dialogDefaultButton:up
+{
+	chromeColor: #535D78;
+}
+
+s|ToggleSwitch
+{
+	skinClass: ClassReference("skins.SNYToggleSwitch");
+}
+
+mx|LegendItem
+{
+	fontSize: 25;
+}

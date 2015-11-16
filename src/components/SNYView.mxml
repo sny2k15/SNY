@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		title="Surya Namaskar Yagnya" 
+		xmlns:components="components.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.core.mx_internal;
+			import mx.events.FlexEvent;
+			
+			import scripts.SNYAppData;
+			import scripts.SNYConstants;
+			
+			import spark.components.TabbedViewNavigator;
+			
+			import views.RegisterView;
+			
+			[Bindable] public var showBackButton:Boolean = false;
+			[Bindable] public var showAddPerson:Boolean = false;
+			[Bindable] public var showDeletePerson:Boolean = false;
+			private var confirmExit:SNYPopUp;
+			
+			protected function GotoHomeHandler(event:Event):void
+			{
+				(this.navigator.parentNavigator as TabbedViewNavigator).selectedIndex = 0;
+			}
+			
+			protected function addMemberClickHandler(event:MouseEvent):void
+			{
+				this.navigator.pushView(RegisterView);
+				SNYAppData.ACTION_TITLE = SNYConstants.REGISTER;
+			}	
+			
+			protected function backButtonClickHandler(event:MouseEvent):void
+			{
+				this.navigator.popView();
+			}
+			
+			protected function manageMembersClickHandler(event:MouseEvent):void
+			{
+				
+			}
+			
+			protected function okHandler(event:Event):void
+			{
+				try {
+					NativeApplication.nativeApplication.exit();
+				} catch (e:Error) {
+					trace('Error:'+e.errorID+"\t"+e.message);
+				}
+			}
+			
+			protected function cancelHandler(event:Event):void
+			{
+				confirmExit.close(false);
+			}
+			/*
+			override protected function backKeyUpHandler(event:KeyboardEvent):void
+			{
+				event.preventDefault();
+				confirmExit = new SNYPopUp();
+				confirmExit.title = "Confirm";
+				confirmExit.message = "Do you want to Exit the application";
+				confirmExit.addEventListener("OK", okHandler);
+				confirmExit.addEventListener("CANCEL", cancelHandler);
+			}
+			*/
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:navigationContent>
+		<s:HGroup>
+			<s:Spacer width="30" />
+			<components:SNYIcon GotoHome="GotoHomeHandler(event)"/>
+		</s:HGroup>
+	</s:navigationContent>
+	<s:actionContent>
+		<s:HGroup paddingRight="20" verticalAlign="middle" height="100%">
+			<s:Group>
+				<s:Image width="72" height="72" click="addMemberClickHandler(event)" smooth="true"
+						 smoothingQuality="high" visible="{showAddPerson}">
+					<s:source>
+						<s:MultiDPIBitmapSource source160dpi="@Embed('assets/dpi160/AddUser.png')"
+												source240dpi="@Embed('assets/dpi240/AddUser.png')"
+												source320dpi="@Embed('assets/dpi320/AddUser.png')"/>
+					</s:source>
+				</s:Image>
+				<components:SNYBackButton visible="{showBackButton}" click="backButtonClickHandler(event)"/>
+			</s:Group>			
+		</s:HGroup>
+	</s:actionContent>
+	<s:viewMenuItems>
+		<s:ViewMenuItem label="Manage Members" click="manageMembersClickHandler(event)"/>
+		<s:ViewMenuItem label="Settings" />
+		<s:ViewMenuItem label="Exit" />
+	</s:viewMenuItems>
+	<s:BorderContainer dropShadowVisible="true" width="100%" height="100%" id="ViewContent">
+		<s:layout>
+			<s:VerticalLayout gap="10" paddingBottom="10" paddingLeft="10" paddingRight="10"
+							  paddingTop="10"/>
+		</s:layout>
+	</s:BorderContainer>
+</s:View>

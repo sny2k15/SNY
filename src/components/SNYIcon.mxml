@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Image xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark" click="gotoHome(event)"
+		 width="72" height="72" smooth="true" smoothingQuality="high">
+	
+	<fx:Script>
+		<![CDATA[
+			
+			public var gotoHomeEvent:Event = new Event("GotoHome", false, true);
+			
+			protected function gotoHome(event:MouseEvent):void
+			{
+				dispatchEvent(gotoHomeEvent);
+			}
+		]]>
+	</fx:Script>
+	<fx:Metadata>
+		[Event(name="GotoHome", type="flash.events.Event")]
+	</fx:Metadata>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:source>
+		<s:MultiDPIBitmapSource source160dpi="@Embed('assets/dpi160/ic_launcher.png')"
+								source240dpi="@Embed('assets/dpi240/ic_launcher.png')"
+								source320dpi="@Embed('assets/dpi320/ic_launcher.png')"/>
+	</s:source>
+</s:Image>

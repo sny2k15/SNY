@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<components:SNYView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					showAddPerson="true"
+					xmlns:components="components.*" 
+					creationComplete="init()"
+					xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Script>
+		<![CDATA[
+			import dao.BaseDAO;
+			import dao.GlobalDAO;
+			import dao.NamaskarDAO;
+			import dao.PersonDAO;
+			
+			import model.Global;
+			import model.Member;
+			import model.Namaskar;
+			import model.Person;
+			
+			import mx.charts.CategoryAxis;
+			import mx.charts.series.ColumnSeries;
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			import mx.utils.ObjectUtil;
+			
+			import scripts.SNYAppData;
+			import scripts.SNYConstants;
+			import scripts.SNYContext;
+			import scripts.SNYTransitions;
+			
+			[Bindable] public var globalAvgCollection:ArrayCollection = new ArrayCollection(); 
+			
+			protected function init():void
+			{
+				
+				if(SNYTransitions.currentTransition!=SNYConstants.FLIP_TRANSITION)
+				{
+					SNYTransitions.setFlipTransition(this.navigator);
+				}
+				if(SNYContext.getAttribute('member')!=null){
+					var personDAO:PersonDAO = new PersonDAO();
+					SNYAppData.MEMBERS = personDAO.findPersons((SNYContext.getAttribute('member') as Member).memberId);		
+					loadColumnChart();			
+				}
+			}
+			
+			protected function viewPersonDetails(event:MouseEvent):void
+			{
+				navigator.pushView(MemberDetailsView, event.currentTarget.selectedItem as Person);
+			}
+			
+			protected function loadColumnChart():void
+			{
+				var arrayCollection:ArrayCollection = new GlobalDAO().findGlobalAvg();
+				var columnSeriesArray:ArrayList = new ArrayList();
+				for(var i:int=0; i<arrayCollection.length; i++)
+				{
+					var global:Global = arrayCollection.getItemAt(i) as Global;
+					var globalDate:Date = new Date(global.dateTime.fullYear, global.dateTime.month, global.dateTime.date);
+					var object:Object = new Object();
+					object.global = global.globalAvg;
+					object.date = (globalDate.month+1)+"/"+globalDate.date;
+					for(var j:int=0; j<SNYAppData.MEMBERS.length; j++)
+					{
+						var person:Person = SNYAppData.MEMBERS.getItemAt(j) as Person;
+						SNYAppData.NAMASKARS = new NamaskarDAO().findNamaskars(person.personId);		
+						for each(var namaskar:Namaskar in SNYAppData.NAMASKARS)
+						{
+							var namaskarDate:Date = new Date(namaskar.dateTime.fullYear, namaskar.dateTime.month, namaskar.dateTime.date);
+							if(ObjectUtil.dateCompare(namaskarDate, globalDate)==0)
+							{
+								object[person.firstName] = namaskar.count;
+								columnSeriesArray.addItem(person.firstName);
+							}
+						}
+					}
+					globalAvgCollection.addItem(object);
+				}
+				trace("globalAvgCollection:"+globalAvgCollection.toArray().toString());	
+				var currentSeries:Array = columnChart.series;
+				
+				for(var j:int = 0; j<columnSeriesArray.length; j++)
+				{
+					var series:ColumnSeries = new ColumnSeries();
+					series.yField = columnSeriesArray.getItemAt(j).toString();
+					series.displayName =  columnSeriesArray.getItemAt(j).toString();
+					currentSeries.push(series);
+				}
+				columnChart.series = currentSeries;
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:Bounce id="bounce" />
+		<!-- Define custom colors for use as fills. -->
+		<mx:SolidColor id="sc1" color="#ff8400" alpha=".8"/>
+		<mx:SolidColor id="sc2" color="blue" alpha=".6"/>
+		<mx:SolidColor id="sc3" color="red" alpha=".6"/>
+		
+		<!-- Define custom Strokes for the columns. -->
+		<mx:SolidColorStroke id="s1" color="#ff8400" weight="2"/>
+		<mx:SolidColorStroke id="s2" color="blue" weight="2"/>
+		<mx:SolidColorStroke id="s3" color="red" weight="2"/>
+	</fx:Declarations>
+	<s:BorderContainer id="membersViewContent" width="98%" height="98%" dropShadowVisible="true"
+					   horizontalCenter="0" verticalCenter="0">
+		<s:layout>
+			<s:VerticalLayout gap="10" horizontalAlign="right" paddingBottom="10" paddingLeft="10"
+							  paddingRight="10" paddingTop="10"/>
+		</s:layout>
+		<s:VGroup width="100%" height="50%" paddingBottom="10" paddingLeft="10" paddingRight="10"
+				  paddingTop="10">
+			<s:List width="100%" dataProvider="{SNYAppData.MEMBERS}" click="viewPersonDetails(event)">
+				<s:itemRenderer>
+					<fx:Component>
+						<s:ItemRenderer>
+							<fx:Script>
+								<![CDATA[
+									override public function set data(value:Object):void {
+										personName.text = value.firstName+", "+value.lastName;
+									}
+								]]>
+							</fx:Script>
+							<s:VGroup paddingBottom="20" paddingLeft="20" paddingRight="20" paddingTop="20" gap="20">
+								<s:Label id="personName"/>
+							</s:VGroup>
+						</s:ItemRenderer>
+					</fx:Component>
+				</s:itemRenderer>
+			</s:List>
+		</s:VGroup>
+		<s:VGroup width="100%" height="50%" horizontalAlign="right" verticalAlign="bottom">
+			<mx:Legend dataProvider="{columnChart}" fontSize="60"/>
+			<mx:ColumnChart id="columnChart" width="100%" height="100%" fontSize="20"
+							showDataTips="true" dataProvider="{globalAvgCollection}">
+				<mx:horizontalAxis>
+					<mx:CategoryAxis categoryField="date"/>
+				</mx:horizontalAxis>
+				<mx:series>
+					<mx:ColumnSeries yField="global" displayName="Global" fill="{sc1}" stroke="{s1}"/>
+				</mx:series>
+			</mx:ColumnChart>
+		</s:VGroup>		
+	</s:BorderContainer>
+</components:SNYView>

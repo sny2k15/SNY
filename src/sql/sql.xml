@@ -1,0 +1,158 @@
+<sql>
+<statement>
+DROP TABLE IF EXISTS MEMBER;
+</statement>
+<statement>
+DROP TABLE IF EXISTS ADDRESS;
+</statement>
+<statement>
+DROP TABLE IF EXISTS PERSON;
+</statement>
+<statement>
+DROP TABLE IF EXISTS NAMASKAR;
+</statement>
+<statement>
+DROP TABLE IF EXISTS REFERENCE_DATA;
+</statement>
+<statement>
+DROP TABLE IF EXISTS SHAKHA;
+</statement>
+<statement>
+CREATE TABLE IF NOT EXISTS MEMBER (
+	MEMBER_ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+	USERNAME TEXT unique not null, 
+	PASSWORD TEXT not null,
+	ROW_CREATED_TMSTMP datetime default current_timestamp,
+	ROW_UPDATED_TMSTMP datetime default current_timestamp)
+</statement>
+<statement>INSERT INTO MEMBER (MEMBER_ID, USERNAME, PASSWORD) VALUES('1001','TestUser','TestPassword');</statement>
+<statement>INSERT INTO MEMBER (MEMBER_ID, USERNAME, PASSWORD) VALUES('1002','TestUser2','TestPassword');</statement>
+<statement>INSERT INTO MEMBER (MEMBER_ID, USERNAME, PASSWORD) VALUES('1003','TestUser3','TestPassword');</statement>
+<statement>INSERT INTO MEMBER (MEMBER_ID, USERNAME, PASSWORD) VALUES('1004','TestUser4','TestPassword');</statement>
+<statement>INSERT INTO MEMBER (MEMBER_ID, USERNAME, PASSWORD) VALUES('1005','TestUser5','TestPassword');</statement>
+<statement>INSERT INTO MEMBER (MEMBER_ID, USERNAME, PASSWORD) VALUES('1006','TestUser6','TestPassword');</statement>
+<statement>
+CREATE TABLE IF NOT EXISTS ADDRESS (
+	ADDRESS_ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+	CITY TEXT, 
+	STATE TEXT, 
+	COUNTRY TEXT, 
+	ZIPCODE TEXT,
+	ROW_CREATED_TMSTMP datetime default current_timestamp,
+	ROW_UPDATED_TMSTMP datetime default current_timestamp)
+</statement>
+<statement>INSERT INTO ADDRESS (ADDRESS_ID,  CITY, STATE, COUNTRY, ZIPCODE) VALUES('2001', 'Hicksville', 'NY', 'United States', '11801');</statement>
+<statement>INSERT INTO ADDRESS (ADDRESS_ID,  CITY, STATE, COUNTRY, ZIPCODE) VALUES('2002', 'Wall Township', 'NJ', 'United States', '07719');</statement>
+<statement>INSERT INTO ADDRESS (ADDRESS_ID,  CITY, STATE, COUNTRY, ZIPCODE) VALUES('2003', 'Atlanta', 'GA', 'United States', '30329');</statement>
+<statement>INSERT INTO ADDRESS (ADDRESS_ID,  CITY, STATE, COUNTRY, ZIPCODE) VALUES('2004', 'Orlando', 'FL', 'United States', '32819');</statement>
+<statement>INSERT INTO ADDRESS (ADDRESS_ID,  CITY, STATE, COUNTRY, ZIPCODE) VALUES('2005', 'Katy', 'TX', 'United States', '77494');</statement>
+<statement>INSERT INTO ADDRESS (ADDRESS_ID,  CITY, STATE, COUNTRY, ZIPCODE) VALUES('2006', 'Des Moines', 'IA', 'United States', '50315');</statement>
+<statement>
+CREATE TABLE IF NOT EXISTS PERSON (
+	PERSON_ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+	FIRSTNAME TEXT, 
+	LASTNAME TEXT,
+	AGE TEXT, 
+	GENDER TEXT,  
+	EMAIL TEXT, 
+	VOLUNTEER INTEGER,
+	ADDRESS_ID INTEGER,
+	MEMBER_ID INTEGER,
+	SHAKHA_ID INTEGER,
+	ROW_CREATED_TMSTMP datetime default current_timestamp,
+	ROW_UPDATED_TMSTMP datetime default current_timestamp,
+	FOREIGN KEY(ADDRESS_ID) REFERENCES ADDRESS(ADDRESS_ID),
+	FOREIGN KEY(MEMBER_ID) REFERENCES MEMBER(MEMBER_ID),
+	FOREIGN KEY(SHAKHA_ID) REFERENCES SHAKHA(SHAKHA_ID))
+</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3001','Shashikanth','Kota', '26', 'Male', 'kshashikanth1@gmail.com', '2001','1001', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3002','Shriram','Kelkar', '26', 'Male', 'kshashikanth1@gmail.com', '2002','1002', '9002');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3003','srinivas','paladi', '26', 'Male', 'kshashikanth1@gmail.com', '2002','1002', '9003');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3004','Abhimanyu','Gupta', '26', 'Male', 'kshashikanth1@gmail.com', '2003','1003', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3005','vinod','sastry', '26', 'Male', 'kshashikanth1@gmail.com', '2003','1003', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3006','Dhananjay','Singh', '26', 'Male', 'kshashikanth1@gmail.com', '2004','1003', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3007','Mrugesh','Patel', '26', 'Male', 'kshashikanth1@gmail.com', '2005','1004', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3008','Satya','Srinivasan', '26', 'Male', 'kshashikanth1@gmail.com', '2006','1004', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3009','Ruchir','Goswami', '26', 'Male', 'kshashikanth1@gmail.com', '2005','1004', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3010','Ankit','Singhal', '26', 'Male', 'kshashikanth1@gmail.com', '2004','1004', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3011','Prasanna','Kumar', '26', 'Male', 'kshashikanth1@gmail.com', '2003','1005', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3012','Milind','Deshpande', '26', 'Male', 'kshashikanth1@gmail.com', '2002','1005', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3013','Murali','Annavajjula', '26', 'Male', 'kshashikanth1@gmail.com', '2001','1006', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3014','Prem','Ramakrishnan', '26', 'Male', 'kshashikanth1@gmail.com', '2006','1006', '9001');</statement>
+<statement>INSERT INTO PERSON (PERSON_ID, FIRSTNAME, LASTNAME, AGE, GENDER, EMAIL,  ADDRESS_ID, MEMBER_ID, SHAKHA_ID) VALUES('3015','Sukhdev','Soni', '26', 'Male', 'kshashikanth1@gmail.com', '2004','1006', '9001');</statement>
+<statement>
+CREATE TABLE IF NOT EXISTS NAMASKAR (
+	NAMASKAR_ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+	DATETIME DATE default CURRENT_DATE,
+	COUNT INTEGER,
+	PERSON_ID INTEGER,
+	ROW_CREATED_TMSTMP datetime default current_timestamp,
+	ROW_UPDATED_TMSTMP datetime default current_timestamp,
+	FOREIGN KEY(PERSON_ID) REFERENCES PERSON(PERSON_ID))
+</statement>
+<statement>INSERT INTO NAMASKAR (NAMASKAR_ID, COUNT, PERSON_ID) VALUES('5001',6,'3001');</statement>
+<statement>INSERT INTO NAMASKAR (COUNT, PERSON_ID) VALUES(2,'3002');</statement>
+<statement>INSERT INTO NAMASKAR (COUNT, PERSON_ID) VALUES(3,'3002');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-11'), 3,'3001');</statement>
+<statement>INSERT INTO NAMASKAR (COUNT, PERSON_ID) VALUES(7,'3003');</statement>
+<statement>INSERT INTO NAMASKAR (COUNT, PERSON_ID) VALUES(5,'3004');</statement>
+<statement>INSERT INTO NAMASKAR (COUNT, PERSON_ID) VALUES(6,'3005');</statement>
+<statement>INSERT INTO NAMASKAR (COUNT, PERSON_ID) VALUES(2,'3004');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-11'), 5,'3006');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-12'), 7,'3007');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-13'), 8,'3008');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-13'), 1,'3006');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-12'), 2,'3009');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-11'), 3,'3012');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-11'), 3,'3015');</statement>
+<statement>INSERT INTO NAMASKAR (COUNT, PERSON_ID) VALUES(6,'3010');</statement>
+<statement>INSERT INTO NAMASKAR (COUNT, PERSON_ID) VALUES(2,'3011');</statement>
+<statement>INSERT INTO NAMASKAR (COUNT, PERSON_ID) VALUES(5,'3012');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-11'), 2,'3006');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-13'), 1,'3007');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-14'), 6,'3005');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-14'), 7,'3005');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-08'), 3,'3008');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-14'), 9,'3011');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-16'), 1,'3012');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-12'), 3,'3013');</statement>
+<statement>INSERT INTO NAMASKAR (DATETIME, COUNT, PERSON_ID) VALUES(DATETIME('2015-11-11'), 7,'3014');</statement>
+<statement>
+CREATE TABLE IF NOT EXISTS REFERENCE_DATA (
+	REFERENCE_DATA_ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+	REFERENCE_TYPE_ID INTEGER,
+	REF_CODE TEXT,
+	REF_CODE_DESC TEXT,
+	COMMENTS TEXT,
+	ROW_CREATED_TMSTMP datetime default current_timestamp,
+	ROW_UPDATED_TMSTMP datetime default current_timestamp)
+</statement>
+<statement>INSERT INTO REFERENCE_DATA (REFERENCE_DATA_ID, REFERENCE_TYPE_ID, REF_CODE, REF_CODE_DESC, COMMENTS) VALUES('101', '10', 'A0U12', '0-12', 'Age Group 0 to 12');</statement>
+<statement>INSERT INTO REFERENCE_DATA (REFERENCE_DATA_ID, REFERENCE_TYPE_ID, REF_CODE, REF_CODE_DESC, COMMENTS) VALUES('102', '10', 'A13U19', '13-19', 'Age Group 13 to 19');</statement>
+<statement>INSERT INTO REFERENCE_DATA (REFERENCE_DATA_ID, REFERENCE_TYPE_ID, REF_CODE, REF_CODE_DESC, COMMENTS) VALUES('103', '10', 'A20U35', '20-35', 'Age Group 20 to 35');</statement>
+<statement>INSERT INTO REFERENCE_DATA (REFERENCE_DATA_ID, REFERENCE_TYPE_ID, REF_CODE, REF_CODE_DESC, COMMENTS) VALUES('104', '10', 'A36U50', '36-50', 'Age Group 36 to 50');</statement>
+<statement>INSERT INTO REFERENCE_DATA (REFERENCE_DATA_ID, REFERENCE_TYPE_ID, REF_CODE, REF_CODE_DESC, COMMENTS) VALUES('105', '10', 'A50', '50+', 'Age Group 50+');</statement>
+<statement execute='true'>
+DELETE FROM MEMBER;
+</statement>
+<statement>
+CREATE TABLE IF NOT EXISTS SHAKHA (
+	SHAKHA_ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+	SHAKHA_NAME TEXT,
+	CITY TEXT,
+	STATE TEXT,
+	SAMBHAG TEXT,
+	ROW_CREATED_TMSTMP datetime default current_timestamp,
+	ROW_UPDATED_TMSTMP datetime default current_timestamp)
+</statement>
+<statement>INSERT INTO SHAKHA (SHAKHA_ID, SHAKHA_NAME, CITY, STATE, SAMBHAG) VALUES('9001', 'Sadhana', '', 'Indiana', 'Mid West');</statement>
+<statement>INSERT INTO SHAKHA (SHAKHA_ID, SHAKHA_NAME, CITY, STATE, SAMBHAG) VALUES('9002', 'Gurugovind', '', 'Wisconsin', 'Mid West');</statement>
+<statement>INSERT INTO SHAKHA (SHAKHA_ID, SHAKHA_NAME, CITY, STATE, SAMBHAG) VALUES('9003', 'Shakti', '', 'New England', 'North East');</statement>
+<statement>INSERT INTO SHAKHA (SHAKHA_ID, SHAKHA_NAME, CITY, STATE, SAMBHAG) VALUES('9004', 'Boston Yuva', '', 'New England', 'Mid West');</statement>
+<statement>INSERT INTO SHAKHA (SHAKHA_ID, SHAKHA_NAME, CITY, STATE, SAMBHAG) VALUES('9005', 'Arjun', '', 'Florida', 'South East');</statement>
+<statement>INSERT INTO SHAKHA (SHAKHA_ID, SHAKHA_NAME, CITY, STATE, SAMBHAG) VALUES('9006', 'Madhav', '', 'Houston', 'South West');</statement>
+<statement>INSERT INTO SHAKHA (SHAKHA_ID, SHAKHA_NAME, CITY, STATE, SAMBHAG) VALUES('9007', 'Kailash ', '', 'Houston', 'Mid West');</statement>
+<statement>INSERT INTO SHAKHA (SHAKHA_ID, SHAKHA_NAME, CITY, STATE, SAMBHAG) VALUES('9008', 'Shakti', '', 'Houston', 'South West');</statement>
+<statement>INSERT INTO SHAKHA (SHAKHA_ID, SHAKHA_NAME, CITY, STATE, SAMBHAG) VALUES('9009', 'Sunnyvale Yuva', 'Santa Clara', 'San Francisco Bay Area', 'West Coast');</statement>
+<statement>INSERT INTO SHAKHA (SHAKHA_ID, SHAKHA_NAME, CITY, STATE, SAMBHAG) VALUES('9010', 'Colorado Springs Hanuman', 'South Colorado', 'Colorado', 'West Coast');</statement>
+</sql>

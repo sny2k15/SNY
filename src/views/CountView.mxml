@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<components:SNYView xmlns:fx="http://ns.adobe.com/mxml/2009"
+					xmlns:s="library://ns.adobe.com/flex/spark"
+					xmlns:components="components.*"
+					preinitialize="init(event)" currentState="UserCount" showBackButton="true">
+	<fx:Script>
+		<![CDATA[
+			import components.SNYPopUp;
+			
+			import dao.NamaskarDAO;
+			
+			import model.Namaskar;
+			import model.Person;
+			
+			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
+			import mx.managers.PopUpManager;
+			import mx.utils.ObjectUtil;
+			
+			import scripts.SNYAppData;
+			import scripts.SNYConstants;
+			
+			import spark.components.HGroup;
+			import spark.components.PopUpPosition;
+			import spark.components.TextInput;
+			import spark.events.PopUpEvent;
+			
+			private var persons:Array = new Array();
+			private var namaskarObj:Namaskar;
+			private var personObj:Person;
+			private var alert:SNYPopUp;
+			private var selectedDate:Date;
+			private var deleteButtonVisible:Boolean = false;
+			
+			protected function init(event:FlexEvent):void
+			{
+				if(data is Namaskar)
+				{
+					namaskarObj = data as Namaskar;		
+					deleteButtonVisible = true;
+				}
+				else if(data is Person)
+				{
+					personObj = data as Person;					
+				}
+			}
+			
+			protected function updateCount(event:MouseEvent):void
+			{
+				selectedDate = new Date(dateTime.selectedDate.fullYear, dateTime.selectedDate.month, dateTime.selectedDate.date);
+				var hasDateUsed:Boolean = false;
+				for each(var existingNamaskar:Namaskar in SNYAppData.NAMASKARS)
+				{
+					var existingDate:Date = new Date(existingNamaskar.dateTime.fullYear, existingNamaskar.dateTime.month, existingNamaskar.dateTime.date);
+					if(ObjectUtil.dateCompare(existingDate, selectedDate)==0)
+					{
+						hasDateUsed = true;
+						break;
+					}
+				}
+				if(hasDateUsed && namaskarObj==null)
+				{
+					alert = new SNYPopUp();
+					alert.title = "Message ";
+					alert.message = "Count for "+(dateTime.selectedDate.month+1+"/"+dateTime.selectedDate.date)+" has be entered.\n Please select the appropriate date and update !!!";
+					alert.showCancelButton = false;
+					alert.addEventListener("OK", updateCountListener);
+					alert.open(this, false);
+				}
+				else
+				{
+					if(currentState=='MembersCount')
+					{
+						updateMembersCountAndClose();
+					}
+					else if(currentState=='UserCount' && count.text.length>0 && parseInt(count.text)>0)
+					{
+						updatePersonCountAndClose();
+					}
+				}
+			}
+			
+			private function updatePersonCountAndClose():void
+			{
+				var namaskar:Namaskar = new Namaskar();
+				namaskar.dateTime = selectedDate;
+				namaskar.count = parseInt(count.text);
+				namaskar.personId = (namaskarObj==null)?personObj.personId:namaskarObj.personId;
+				var namaskarDAO:NamaskarDAO = new NamaskarDAO();
+				namaskarDAO.addNamaskar(namaskar);
+				navigator.popView();
+			}
+			
+			private function updateMembersCountAndClose():void
+			{
+				for(var i:int = 0; i<membersVGroup.numElements; i++)
+				{
+					var group:HGroup = membersVGroup.getElementAt(i) as HGroup;
+					var textField:TextInput = group.getChildByName(persons[i].toString()) as TextInput;
+					if(textField.text!="0")
+					{
+						var namaskar:Namaskar = new Namaskar();
+						namaskar.dateTime = selectedDate;
+						namaskar.count = parseInt(textField.text);
+						namaskar.personId = persons[i];
+						
+						var namaskarDAO:NamaskarDAO = new NamaskarDAO();
+						namaskarDAO.addNamaskar(namaskar);
+					}
+				}
+				navigator.popView();
+			}
+			
+			protected function deleteNamaskar(event:MouseEvent):void
+			{
+				alert = new SNYPopUp();
+				alert.title = "Confirm ";
+				alert.message = "Do you want to delete count ?";
+				alert.addEventListener("CANCEL", cancelClickListener);
+				alert.addEventListener("OK", okClickListener);
+				alert.open(this, false);
+			}
+			
+			protected function cancelClickListener(event:Event):void
+			{
+				alert.close(false);
+			}
+			
+			protected function okClickListener(event:Event):void
+			{
+				alert.close(true);
+				if(namaskarObj!=null)
+				{
+					var namaskarDAO:NamaskarDAO = new NamaskarDAO();
+					namaskarDAO.deleteNamaskar(namaskarObj.namaskarId);
+					navigator.popView();
+				}
+			}			
+			
+			protected function updateCountListener(event:Event):void
+			{
+				alert.close(true);
+				//navigator.popView();
+			}
+			
+			protected function userCountStateHandler(event:FlexEvent):void
+			{
+				if(namaskarObj!=null)
+				{
+					dateTime.selectedDate = namaskarObj.dateTime;
+					count.text = namaskarObj.count.toString();event;
+				}
+			}
+			
+			protected function membersCountStatehandler(event:FlexEvent):void
+			{
+				
+				if(namaskarObj!=null)
+				{
+					dateTime.selectedDate = namaskarObj.dateTime;
+				}
+				if(membersVGroup.numChildren>0)
+				{
+					membersVGroup.removeAllElements();
+				}
+				for(var i:int=0; i<SNYAppData.MEMBERS.length; i++)
+				{
+					var person:Person = SNYAppData.MEMBERS.getItemAt(i) as Person;
+					persons[i] = person.personId;
+					var group:HGroup = new HGroup;
+					group.gap = SNYAppData.VSPACE*2;
+					group.verticalAlign = "middle";
+					group.horizontalAlign = "center";
+					var label:Label = new Label;
+					label.text = person.firstName;
+					label.width = 200;
+					var textField:TextInput = new TextInput();
+					textField.id = person.personId.toString();
+					textField.name = person.personId.toString();
+					textField.text = "0";
+					if(namaskarObj!=null)
+					{
+						if(namaskarObj.personId == person.personId)
+						{
+							textField.text = namaskarObj.count.toString();
+						}
+						else
+						{
+							textField.enabled = false;	
+						}
+					}
+					textField.width = 100;
+					group.addElement(label);
+					group.addElement(textField);
+					membersVGroup.addElement(group);					
+				}
+			}
+			
+			protected function membersSwitchChangeHandler(event:Event):void
+			{
+				if(membersSwitch.selected){
+					currentState = 'MembersCount';
+				}else {
+					currentState = 'UserCount';
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<components:states>
+		<s:State name="MembersCount" enterState="membersCountStatehandler(event)"/>
+		<s:State name="UserCount" enterState="userCountStateHandler(event)"/>
+	</components:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->	
+	</fx:Declarations>
+	<s:BorderContainer width="95%" height="95%" horizontalCenter="0" verticalCenter="0" dropShadowVisible="true">
+		<s:VGroup width="100%" height="100%" gap="30"
+				  horizontalAlign="center" horizontalCenter="0" paddingBottom="10" paddingLeft="10"
+				  paddingRight="10" paddingTop="10" verticalCenter="0">
+			<s:BorderContainer width="100%" height="80" dropShadowVisible="true" backgroundColor="#fb5a03">
+				<s:Label x="30" y="10" width="100%" height="58" color="#FFFFFF" 
+						 text="Log count" verticalAlign="middle"/>
+				<s:Image right="10" smooth="true" smoothingQuality="high" verticalCenter="0" click="deleteNamaskar(event)" visible="{deleteButtonVisible}">
+					<s:source>
+						<s:MultiDPIBitmapSource source160dpi="@Embed('assets/dpi160/delete.png')"
+												source240dpi="@Embed('assets/dpi240/delete.png')"
+												source320dpi="@Embed('assets/dpi320/delete.png')"/>
+					</s:source>
+				</s:Image>
+			</s:BorderContainer>
+			<s:HGroup width="50%" height="100" horizontalAlign="center"
+					  verticalAlign="middle">
+				<s:Label text="Enter Count for all members :"/>
+				<s:ToggleSwitch id="membersSwitch" change="membersSwitchChangeHandler(event)"/>
+			</s:HGroup>
+			<s:DateSpinner id="dateTime" width="100%" height="40%" displayMode="date"/>
+			<s:HGroup includeIn="UserCount" width="50%" height="100" horizontalAlign="center"
+					  verticalAlign="middle">
+				<s:Label text="Enter Count :"/>
+				<s:TextInput id="count" width="100"/>
+			</s:HGroup>
+			<s:VGroup id="membersVGroup" x="111" width="100%" gap="20" horizontalAlign="center"
+					  paddingBottom="20" paddingLeft="20" paddingRight="20" paddingTop="20"
+					  verticalAlign="middle" includeIn="MembersCount">
+			</s:VGroup>
+			<s:Button width="50%" height="104" label="Save" color="#D4FECF" click="updateCount(event)"/>
+		</s:VGroup>
+	</s:BorderContainer>
+</components:SNYView>

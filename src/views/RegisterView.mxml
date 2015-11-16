@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<components:SNYView xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:components="components.*" 
+					xmlns:flextras="http://www.flextras.com/mxml"
+					showBackButton="true"
+					creationComplete="creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import dao.AddressDAO;
+			import dao.MemberDAO;
+			import dao.PersonDAO;
+			import dao.ShakhaDAO;
+			
+			import flash.utils.flash_proxy;
+			
+			import model.Address;
+			import model.Member;
+			import model.Person;
+			import model.Shakha;
+			
+			import mx.collections.ArrayList;
+			import mx.collections.XMLListCollection;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import scripts.SNYAppData;
+			import scripts.SNYConstants;
+			import scripts.SNYContext;
+			
+			[Bindable] public var countriesXML:XMLListCollection;
+			[Bindable] public var statesXML:XMLListCollection;
+			
+			private var person:Person = null;
+			private var address:Address = null;
+			
+			private function keyDown(event:KeyboardEvent):void
+			{               
+				if(event.keyCode == Keyboard.BACK)
+				{
+					event.stopImmediatePropagation();                   
+					event.preventDefault();                 
+				}
+			}
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				countriesHttpService.send();
+				statesHttpService.send();
+				person = null;
+				if(data!=null)
+				{
+					person = data as Person;
+					firstName.text = person.firstName;
+					lastName.text = person.lastName;
+					age.textInput.text = person.age;
+					person.gender=='Male'?male.selected=true:female.selected=true;
+					email.text = person.email;
+					volunteer.selected = (person.volunteer == 1);
+					address = new AddressDAO().findAddress(person.addressId);
+					shakha.textInput.text = (new ShakhaDAO().findShakha(person.shakhaId) as Shakha).shakhaName; 
+					city.text = address.city;
+					state.textInput.text = address.state;
+					country.textInput.text = address.country;
+					zipCode.text = address.zipCode;
+				}
+			}
+			
+			protected function countriesXML_resultHandler(event:ResultEvent):void
+			{
+				var xmlList:XMLList = XML(event.result).country;
+				countriesXML = new XMLListCollection(xmlList);				
+			}
+			
+			protected function statesXML_resultHandler(event:ResultEvent):void
+			{
+				var xmlList:XMLList = XML(event.result).state;
+				statesXML = new XMLListCollection(xmlList);				
+			}
+			
+			protected function faultHandler(event:FaultEvent):void
+			{
+				navigator.pushView(ErrorView, "FAULT"+event.fault.toString);	
+			}
+			
+			protected function registerClickHandler(event:MouseEvent):void
+			{
+				if(person==null){
+					person = new Person();
+				}
+				person.firstName = firstName.text;
+				person.lastName = lastName.text;
+				person.age = age.textInput.text;
+				person.gender = (male.selected)?"Male":"Female";
+				person.volunteer = volunteer.selected?1:0;
+				if(address == null)
+				{
+					address = new Address();
+				}
+				address.city = city.text;
+				address.state = state.textInput.text;
+				address.country = country.textInput.text;
+				address.zipCode = zipCode.text;
+				
+				var addressDAO:AddressDAO = new AddressDAO();
+				var addressId_temp:Number = addressDAO.addAddress(address);
+				if(isNaN(person.addressId))
+				{
+					person.addressId = addressId_temp;
+				}
+				if(SNYContext.getAttribute('member')==null)
+				{
+					var memberDAO:MemberDAO = new MemberDAO();
+					var member:Member = new Member();
+					member.username = email.text;
+					member.password = email.text;
+					person.memberId = memberDAO.addMember(member);
+					member.memberId = person.memberId;
+					SNYContext.setAttribute('member', member); 
+				}
+				else
+				{
+					person.memberId = (SNYContext.getAttribute('member') as Member).memberId;
+				}
+				person.email = email.text;
+				person.shakhaId = shakha.selectedItem.shakhaId;
+				var personDAO:PersonDAO = new PersonDAO();
+				var personID:Number = personDAO.addPerson(person);
+				navigator.popView();
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:HTTPService id="countriesHttpService" url="{SNYConstants.COUNTRIES_URL}" resultFormat="e4x" 
+					   result="countriesXML_resultHandler(event)" fault="faultHandler(event)" />
+		<s:HTTPService id="statesHttpService" url="{SNYConstants.STATES_URL}" resultFormat="e4x" 
+					   result="statesXML_resultHandler(event)" fault="faultHandler(event)" />
+		
+	</fx:Declarations>
+	<s:BorderContainer width="95%" height="95%" horizontalCenter="0" verticalCenter="0" dropShadowVisible="true">
+		<s:Scroller width="100%" height="100%" horizontalScrollPolicy="off" verticalScrollPolicy="auto">
+			<s:VGroup width="98%" height="98%" gap="30"
+					  paddingBottom="15" paddingLeft="15" paddingRight="15" paddingTop="15"
+					  horizontalCenter="0" verticalCenter="0"
+					  verticalAlign="top" horizontalAlign="center">
+				<s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle"
+						  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+					<s:Label text="{SNYConstants.FIRST_NAME}" width="30%"/>
+					<s:TextInput id="firstName" width="70%"/>
+				</s:HGroup>
+				<s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle"
+						  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+					<s:Label text="{SNYConstants.LAST_NAME}" width="30%"/>
+					<s:TextInput id="lastName" width="70%"/>
+				</s:HGroup>
+				<s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle"
+						  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+					<s:Label text="{SNYConstants.AGE}" width="30%"/>					
+					<flextras:AutoCompleteComboBoxMobile id="age" width="70%" 
+														 dataProvider="{SNYConstants.AGE_GROUPS}" labelField="desc"/>
+				</s:HGroup>				
+				<s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle"
+						  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+					<s:Label text="{SNYConstants.EMAIL}" width="30%"/>
+					<s:TextInput id="email" width="70%"/>
+				</s:HGroup>
+				<s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle"
+						  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+					<s:Label text="{SNYConstants.GENDER}" width="30%"/>
+					<s:RadioButton id="male" label="Male" width="35%" groupName="Gender"/>
+					<s:RadioButton id="female" label="Female" width="35%" groupName="Gender"/>
+				</s:HGroup>
+				<s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle"
+						  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+					<s:Label text="{SNYConstants.CITY}" width="30%"/>
+					<s:TextInput id="city" width="70%"/>
+				</s:HGroup>
+				<s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle"
+						  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+					<s:Label text="{SNYConstants.STATE}" width="30%"/>					
+					<flextras:AutoCompleteComboBoxMobile id="state" width="70%" 
+														 dataProvider="{statesXML}" labelField="@name"/>
+				</s:HGroup>
+				<s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle"
+						  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+					<s:Label text="{SNYConstants.COUNTRY}" width="30%"/>
+					<flextras:AutoCompleteComboBoxMobile id="country" width="70%" 
+												   dataProvider="{countriesXML}" labelField="@countryName"/>
+				</s:HGroup>
+				<s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle"
+						  paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+					<s:Label text="{SNYConstants.ZIP_CODE}" width="30%"/>
+					<s:TextInput id="zipCode" width="70%"/>
+				</s:HGroup>
+				<s:HGroup width="100%" horizontalAlign="left" verticalAlign="middle" gap="20"
+						  paddingBottom="20" paddingLeft="10" paddingRight="10" paddingTop="20">
+					<s:Label text="{SNYConstants.REGISTRATION_MESSAGE}"/>
+					<s:ToggleSwitch id="volunteer"/>
+				</s:HGroup>
+				<s:HGroup width="100%" horizontalAlign="right" verticalAlign="middle" gap="20"
+						  paddingBottom="20" paddingLeft="10" paddingRight="10" paddingTop="20">
+					<s:Label text="{SNYConstants.REGISTRATION_SHAKHA_MESSAGE}"
+							 textAlign="center" verticalAlign="middle"/>
+					<flextras:AutoCompleteComboBoxMobile id="shakha" width="70%" 
+														 dataProvider="{SNYAppData.SHAKHAS}" labelField="shakhaName"/>
+				</s:HGroup>
+				<s:HGroup width="100%" horizontalAlign="center" verticalAlign="middle" gap="20"
+						  paddingBottom="20" paddingLeft="10" paddingRight="10" paddingTop="30">
+					<components:SNYButton width="50%" height="{zipCode.height+10}" 
+										  label="{SNYAppData.ACTION_TITLE}" color="#FFFFFF"
+										  id="register" click="registerClickHandler(event)"/>
+				</s:HGroup>
+			</s:VGroup>
+		</s:Scroller>
+	</s:BorderContainer>
+</components:SNYView>

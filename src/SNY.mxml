@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark"
+			   applicationDPI="320" creationComplete="creationCompleteHandler(event)"
+			   applicationComplete="applicationCompleteHandler(event)"
+			   currentState="splash" preinitialize="preInitialize(event)" resizeForSoftKeyboard="true"
+			   preloader="components.SNYSplashScreen" splashScreenScaleMode="letterbox" xmlns:components="components.*">
+	<fx:Script>
+		<![CDATA[
+			import components.SNYPopUp;
+			
+			import dao.MemberDAO;
+			import dao.ShakhaDAO;
+			
+			import model.Member;
+			
+			import mx.collections.ArrayCollection;
+			import mx.core.FlexGlobals;
+			import mx.events.FlexEvent;
+			
+			import scripts.SNYAppData;
+			import scripts.SNYConstants;
+			import scripts.SNYContext;
+			import scripts.SNYTransitions;
+			
+			import spark.components.NavigatorContent;
+			
+			import util.SNYUtil;
+			
+			import views.RegisterView;
+			
+			public var sqlConnection:SQLConnection;
+			public var timer:Timer;
+			[Bindable] public var newUser:Boolean = true;
+			public var confirmExit:SNYPopUp;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{				
+				
+				trace('Scree Resolution X: '+Capabilities.screenResolutionX);
+				trace('Scree Resolution Y: '+Capabilities.screenResolutionY);
+				trace('Scree DPI: '+Capabilities.screenDPI);
+				trace('Scree Width: '+FlexGlobals.topLevelApplication.width);
+				trace('Scree Height: '+FlexGlobals.topLevelApplication.height);
+				
+				SNYAppData.STAGE_WIDTH = FlexGlobals.topLevelApplication.width;
+				SNYAppData.STAGE_HEIGHT = FlexGlobals.topLevelApplication.height;
+				
+				if(Capabilities.screenDPI > FlexGlobals.topLevelApplication.applicationDPI)
+				{
+					snyMainView.scaleX = snyMainView.scaleY = Capabilities.screenDPI / FlexGlobals.topLevelApplication.applicationDPI;
+				}
+				
+				//configureBackButtonHandler();
+				
+				if(newUser)
+				{
+					currentState='instructions';
+				}
+				else
+				{
+					currentState='Main';
+				}
+			}
+			
+			protected function LoadHomeViewHandler(event:Event = null):void
+			{
+				tabbedViewNavigator.selectedIndex = 0;
+				membersViewNavigator.popToFirstView();
+			}
+			
+			protected function preInitialize(event:FlexEvent):void
+			{
+				var memberDAO:MemberDAO = new MemberDAO;
+				var memberCollection:ArrayCollection = memberDAO.findMemberDefault();				
+				newUser = (memberCollection.length==0);
+				if(!newUser){
+					var member:Member = memberCollection.getItemAt(0) as Member;
+					trace('member id:'+member.memberId);
+					SNYContext.setAttribute("member", member);
+				}
+				
+				var shakhaDAO:ShakhaDAO = new ShakhaDAO();
+				SNYAppData.SHAKHAS = shakhaDAO.findShakhas();
+			}
+			
+			private function handleButtons(event:KeyboardEvent):void {
+				if (event.keyCode == 16777238 || event.keyCode == Keyboard.BACK)  
+				{
+					switch(tabbedViewNavigator.selectedIndex)
+					{
+						case 0:
+						{
+							if(membersViewNavigator.length<=1){
+								showExitPopUp(event);
+							}else{							
+								membersViewNavigator.popToFirstView();
+								removeKeyDownListeners();
+							}
+							break;
+						}
+							
+						case 1:
+						{
+							if(statsViewNavigator.length<=1){
+								showExitPopUp(event);
+							}else{							
+								statsViewNavigator.popView();
+							}
+							break;
+						}
+							
+						case 2:
+						{
+							if(mediaViewNavigator.length<=1){
+								showExitPopUp(event);
+							}else{							
+								mediaViewNavigator.popView();
+							}
+							break;
+						}
+							
+						default:
+						{
+							break;
+						}
+					}	
+				}
+							
+			}
+			
+			protected function showExitPopUp(event:KeyboardEvent):void
+			{
+				if(confirmExit == null)
+				{
+					confirmExit = new SNYPopUp();
+					confirmExit.title = "Confirm";
+					confirmExit.message = "Do you want to Exit the application";
+					confirmExit.addEventListener("OK", okHandler);
+					confirmExit.addEventListener("CANCEL", cancelHandler);
+					confirmExit.open(this, false);
+					event.stopImmediatePropagation();
+					event.preventDefault();
+					event.stopPropagation();
+				}
+			}
+			
+			protected function okHandler(event:Event):void
+			{
+				try {
+					NativeApplication.nativeApplication.exit();
+				} catch (e:Error) {
+					trace('Error:'+e.errorID+"\t"+e.message);
+				}
+			}
+			
+			protected function cancelHandler(event:Event):void
+			{
+				confirmExit.close(true);
+				confirmExit = null;
+				
+				removeKeyDownListeners();
+			}
+			
+			protected function removeKeyDownListeners():void
+			{
+				stage.removeEventListener("keyDown", handleButtons);
+				stage.removeEventListener("keyUp", handleButtons);
+				
+				stage.addEventListener("keyDown", handleButtons, false,1);
+				stage.addEventListener("keyUp", handleButtons, false, 1);
+				
+			}
+			
+			protected function loadMainScreenComponents(event:FlexEvent):void
+			{
+				SNYTransitions.setFlipTransition(membersViewNavigator);
+				SNYTransitions.setFlipTransition(statsViewNavigator);
+				SNYTransitions.setFlipTransition(mediaViewNavigator);
+				
+				tabbedViewNavigator.addEventListener('LoadHomeView', LoadHomeViewHandler);
+				if(newUser)
+				{
+					membersViewNavigator.pushView(RegisterView);	
+					SNYAppData.ACTION_TITLE = SNYConstants.REGISTER;
+				}
+			}
+			
+			protected function loadInstructionsComponents(event:FlexEvent):void
+			{
+				timer = new Timer(3000);
+				timer.addEventListener(TimerEvent.TIMER, loadNextScreen);
+				timer.start();
+			}
+			
+			private function loadNextScreen(evt:TimerEvent):void {
+				timer.stop();
+				timer.reset();
+				currentState='Register';
+			}
+			
+			protected function gotoRegisterPage(event:MouseEvent):void
+			{
+				currentState='Main'
+			}
+			
+			protected function applicationCompleteHandler(event:FlexEvent):void
+			{
+				//NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_UP, handleButtons, false, 1);
+				stage.addEventListener("keyDown", handleButtons, false,1);
+				stage.addEventListener("keyUp", handleButtons, false, 1);
+			}
+			
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="Main" enterState="loadMainScreenComponents(event)"/>
+		<s:State name="splash"/>
+		<s:State name="instructions" enterState="loadInstructionsComponents(event)"/>
+		<s:State name="Register"/>
+	</s:states>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Style source="styles/SNY.css" />
+	<s:BorderContainer id="snyMainView" includeIn="Main,splash" width="100%" height="100%"
+					   dropShadowVisible="true" horizontalCenter="0" verticalCenter="0">
+		<s:TabbedViewNavigator includeIn="Main" x="0" y="0" width="100%" height="100%" id="tabbedViewNavigator">
+			<s:ViewNavigator width="100%" height="100%" label="Members" firstView="views.MembersView"
+							 title="Surya Namaskar Yagnya" id="membersViewNavigator"/>
+			<s:ViewNavigator width="100%" height="100%" label="Stats" id="statsViewNavigator"
+							 firstView="views.StatsView" title="Surya Namaskar Yagnya"/>
+			<s:ViewNavigator width="100%" height="100%" label="Media" firstView="views.MediaView"
+							 title="Surya Namaskar Yagnya" id="mediaViewNavigator"/>
+		</s:TabbedViewNavigator>		
+		<s:VGroup width="100%" height="100%" includeIn="splash"
+				  horizontalCenter="0" paddingBottom="20" paddingLeft="20"
+				  paddingRight="20" paddingTop="20" verticalCenter="0">
+			<s:Image width="100%" height="100%" smooth="true"
+					 smoothingQuality="high" source="@Embed('assets/dpi320/om_splash.png')">
+			</s:Image>
+			
+		</s:VGroup>
+	</s:BorderContainer>
+	<s:Image includeIn="instructions" x="0" y="0" width="100%" height="100%" click="{currentState='Register'}">
+		<s:source>
+			<s:MultiDPIBitmapSource source160dpi="@Embed('assets/dpi160/Instructions.png')"
+									source240dpi="@Embed('assets/dpi240/Instructions.png')"
+									source320dpi="@Embed('assets/dpi320/Instructions.png')"/>
+		</s:source>
+	</s:Image>
+	<s:VGroup includeIn="Register" width="90%" height="90%" gap="20" horizontalAlign="center"
+			  horizontalCenter="0" paddingBottom="10" paddingLeft="10" paddingRight="10"
+			  paddingTop="10" verticalAlign="middle" verticalCenter="0">
+		<s:HGroup width="100%">
+			<s:Label width="100%" height="100"
+					 text="Kindly register below and Enjoy your Surya Namaskar !" textAlign="center"
+					 verticalAlign="middle"/>
+		</s:HGroup>
+		<s:Image width="100%" height="100%" source="assets/dpi160/om_logo.png"/>
+		<s:HGroup width="100%" height="200" horizontalAlign="center" verticalAlign="middle">
+			<components:SNYButton width="50%" height="30%" label="{SNYConstants.REGISTER}" color="#FFFFFF" click="gotoRegisterPage(event)"
+								  imgSource="assets/dpi160/RegisterIcon.png"/>
+		</s:HGroup>
+	</s:VGroup>
+</s:Application>

@@ -1,0 +1,252 @@
+<countries>
+	<country countryCode="US" countryName="United States" geonameId="6252001" />
+	<country countryCode="IN" countryName="India" geonameId="1269750" />
+	<country countryCode="AD" countryName="Andorra" geonameId="3041565" />
+	<country countryCode="AE" countryName="United Arab Emirates" geonameId="290557" />
+	<country countryCode="AF" countryName="Afghanistan" geonameId="1149361" />
+	<country countryCode="AG" countryName="Antigua and Barbuda" geonameId="3576396" />
+	<country countryCode="AI" countryName="Anguilla" geonameId="3573511" />
+	<country countryCode="AL" countryName="Albania" geonameId="783754" />
+	<country countryCode="AM" countryName="Armenia" geonameId="174982" />
+	<country countryCode="AO" countryName="Angola" geonameId="3351879" />
+	<country countryCode="AQ" countryName="Antarctica" geonameId="6697173" />
+	<country countryCode="AR" countryName="Argentina" geonameId="3865483" />
+	<country countryCode="AS" countryName="American Samoa" geonameId="5880801" />
+	<country countryCode="AT" countryName="Austria" geonameId="2782113" />
+	<country countryCode="AU" countryName="Australia" geonameId="2077456" />
+	<country countryCode="AW" countryName="Aruba" geonameId="3577279" />
+	<country countryCode="AX" countryName="Åland" geonameId="661882" />
+	<country countryCode="AZ" countryName="Azerbaijan" geonameId="587116" />
+	<country countryCode="BA" countryName="Bosnia and Herzegovina" geonameId="3277605" />
+	<country countryCode="BB" countryName="Barbados" geonameId="3374084" />
+	<country countryCode="BD" countryName="Bangladesh" geonameId="1210997" />
+	<country countryCode="BE" countryName="Belgium" geonameId="2802361" />
+	<country countryCode="BF" countryName="Burkina Faso" geonameId="2361809" />
+	<country countryCode="BG" countryName="Bulgaria" geonameId="732800" />
+	<country countryCode="BH" countryName="Bahrain" geonameId="290291" />
+	<country countryCode="BI" countryName="Burundi" geonameId="433561" />
+	<country countryCode="BJ" countryName="Benin" geonameId="2395170" />
+	<country countryCode="BL" countryName="Saint Barthélemy" geonameId="3578476" />
+	<country countryCode="BM" countryName="Bermuda" geonameId="3573345" />
+	<country countryCode="BN" countryName="Brunei" geonameId="1820814" />
+	<country countryCode="BO" countryName="Bolivia" geonameId="3923057" />
+	<country countryCode="BQ" countryName="Bonaire" geonameId="7626844" />
+	<country countryCode="BR" countryName="Brazil" geonameId="3469034" />
+	<country countryCode="BS" countryName="Bahamas" geonameId="3572887" />
+	<country countryCode="BT" countryName="Bhutan" geonameId="1252634" />
+	<country countryCode="BV" countryName="Bouvet Island" geonameId="3371123" />
+	<country countryCode="BW" countryName="Botswana" geonameId="933860" />
+	<country countryCode="BY" countryName="Belarus" geonameId="630336" />
+	<country countryCode="BZ" countryName="Belize" geonameId="3582678" />
+	<country countryCode="CA" countryName="Canada" geonameId="6251999" />
+	<country countryCode="CC" countryName="Cocos [Keeling] Islands" geonameId="1547376" />
+	<country countryCode="CD" countryName="Democratic Republic of the Congo" geonameId="203312" />
+	<country countryCode="CF" countryName="Central African Republic" geonameId="239880" />
+	<country countryCode="CG" countryName="Republic of the Congo" geonameId="2260494" />
+	<country countryCode="CH" countryName="Switzerland" geonameId="2658434" />
+	<country countryCode="CI" countryName="Ivory Coast" geonameId="2287781" />
+	<country countryCode="CK" countryName="Cook Islands" geonameId="1899402" />
+	<country countryCode="CL" countryName="Chile" geonameId="3895114" />
+	<country countryCode="CM" countryName="Cameroon" geonameId="2233387" />
+	<country countryCode="CN" countryName="China" geonameId="1814991" />
+	<country countryCode="CO" countryName="Colombia" geonameId="3686110" />
+	<country countryCode="CR" countryName="Costa Rica" geonameId="3624060" />
+	<country countryCode="CU" countryName="Cuba" geonameId="3562981" />
+	<country countryCode="CV" countryName="Cape Verde" geonameId="3374766" />
+	<country countryCode="CW" countryName="Curacao" geonameId="7626836" />
+	<country countryCode="CX" countryName="Christmas Island" geonameId="2078138" />
+	<country countryCode="CY" countryName="Cyprus" geonameId="146669" />
+	<country countryCode="CZ" countryName="Czech Republic" geonameId="3077311" />
+	<country countryCode="DE" countryName="Germany" geonameId="2921044" />
+	<country countryCode="DJ" countryName="Djibouti" geonameId="223816" />
+	<country countryCode="DK" countryName="Denmark" geonameId="2623032" />
+	<country countryCode="DM" countryName="Dominica" geonameId="3575830" />
+	<country countryCode="DO" countryName="Dominican Republic" geonameId="3508796" />
+	<country countryCode="DZ" countryName="Algeria" geonameId="2589581" />
+	<country countryCode="EC" countryName="Ecuador" geonameId="3658394" />
+	<country countryCode="EE" countryName="Estonia" geonameId="453733" />
+	<country countryCode="EG" countryName="Egypt" geonameId="357994" />
+	<country countryCode="EH" countryName="Western Sahara" geonameId="2461445" />
+	<country countryCode="ER" countryName="Eritrea" geonameId="338010" />
+	<country countryCode="ES" countryName="Spain" geonameId="2510769" />
+	<country countryCode="ET" countryName="Ethiopia" geonameId="337996" />
+	<country countryCode="FI" countryName="Finland" geonameId="660013" />
+	<country countryCode="FJ" countryName="Fiji" geonameId="2205218" />
+	<country countryCode="FK" countryName="Falkland Islands" geonameId="3474414" />
+	<country countryCode="FM" countryName="Micronesia" geonameId="2081918" />
+	<country countryCode="FO" countryName="Faroe Islands" geonameId="2622320" />
+	<country countryCode="FR" countryName="France" geonameId="3017382" />
+	<country countryCode="GA" countryName="Gabon" geonameId="2400553" />
+	<country countryCode="GB" countryName="United Kingdom" geonameId="2635167" />
+	<country countryCode="GD" countryName="Grenada" geonameId="3580239" />
+	<country countryCode="GE" countryName="Georgia" geonameId="614540" />
+	<country countryCode="GF" countryName="French Guiana" geonameId="3381670" />
+	<country countryCode="GG" countryName="Guernsey" geonameId="3042362" />
+	<country countryCode="GH" countryName="Ghana" geonameId="2300660" />
+	<country countryCode="GI" countryName="Gibraltar" geonameId="2411586" />
+	<country countryCode="GL" countryName="Greenland" geonameId="3425505" />
+	<country countryCode="GM" countryName="Gambia" geonameId="2413451" />
+	<country countryCode="GN" countryName="Guinea" geonameId="2420477" />
+	<country countryCode="GP" countryName="Guadeloupe" geonameId="3579143" />
+	<country countryCode="GQ" countryName="Equatorial Guinea" geonameId="2309096" />
+	<country countryCode="GR" countryName="Greece" geonameId="390903" />
+	<country countryCode="GS" countryName="South Georgia and the South Sandwich Islands" geonameId="3474415" />
+	<country countryCode="GT" countryName="Guatemala" geonameId="3595528" />
+	<country countryCode="GU" countryName="Guam" geonameId="4043988" />
+	<country countryCode="GW" countryName="Guinea-Bissau" geonameId="2372248" />
+	<country countryCode="GY" countryName="Guyana" geonameId="3378535" />
+	<country countryCode="HK" countryName="Hong Kong" geonameId="1819730" />
+	<country countryCode="HM" countryName="Heard Island and McDonald Islands" geonameId="1547314" />
+	<country countryCode="HN" countryName="Honduras" geonameId="3608932" />
+	<country countryCode="HR" countryName="Croatia" geonameId="3202326" />
+	<country countryCode="HT" countryName="Haiti" geonameId="3723988" />
+	<country countryCode="HU" countryName="Hungary" geonameId="719819" />
+	<country countryCode="ID" countryName="Indonesia" geonameId="1643084" />
+	<country countryCode="IE" countryName="Ireland" geonameId="2963597" />
+	<country countryCode="IL" countryName="Israel" geonameId="294640" />
+	<country countryCode="IM" countryName="Isle of Man" geonameId="3042225" />
+	<country countryCode="IO" countryName="British Indian Ocean Territory" geonameId="1282588" />
+	<country countryCode="IQ" countryName="Iraq" geonameId="99237" />
+	<country countryCode="IR" countryName="Iran" geonameId="130758" />
+	<country countryCode="IS" countryName="Iceland" geonameId="2629691" />
+	<country countryCode="IT" countryName="Italy" geonameId="3175395" />
+	<country countryCode="JE" countryName="Jersey" geonameId="3042142" />
+	<country countryCode="JM" countryName="Jamaica" geonameId="3489940" />
+	<country countryCode="JO" countryName="Jordan" geonameId="248816" />
+	<country countryCode="JP" countryName="Japan" geonameId="1861060" />
+	<country countryCode="KE" countryName="Kenya" geonameId="192950" />
+	<country countryCode="KG" countryName="Kyrgyzstan" geonameId="1527747" />
+	<country countryCode="KH" countryName="Cambodia" geonameId="1831722" />
+	<country countryCode="KI" countryName="Kiribati" geonameId="4030945" />
+	<country countryCode="KM" countryName="Comoros" geonameId="921929" />
+	<country countryCode="KN" countryName="Saint Kitts and Nevis" geonameId="3575174" />
+	<country countryCode="KP" countryName="North Korea" geonameId="1873107" />
+	<country countryCode="KR" countryName="South Korea" geonameId="1835841" />
+	<country countryCode="KW" countryName="Kuwait" geonameId="285570" />
+	<country countryCode="KY" countryName="Cayman Islands" geonameId="3580718" />
+	<country countryCode="KZ" countryName="Kazakhstan" geonameId="1522867" />
+	<country countryCode="LA" countryName="Laos" geonameId="1655842" />
+	<country countryCode="LB" countryName="Lebanon" geonameId="272103" />
+	<country countryCode="LC" countryName="Saint Lucia" geonameId="3576468" />
+	<country countryCode="LI" countryName="Liechtenstein" geonameId="3042058" />
+	<country countryCode="LK" countryName="Sri Lanka" geonameId="1227603" />
+	<country countryCode="LR" countryName="Liberia" geonameId="2275384" />
+	<country countryCode="LS" countryName="Lesotho" geonameId="932692" />
+	<country countryCode="LT" countryName="Lithuania" geonameId="597427" />
+	<country countryCode="LU" countryName="Luxembourg" geonameId="2960313" />
+	<country countryCode="LV" countryName="Latvia" geonameId="458258" />
+	<country countryCode="LY" countryName="Libya" geonameId="2215636" />
+	<country countryCode="MA" countryName="Morocco" geonameId="2542007" />
+	<country countryCode="MC" countryName="Monaco" geonameId="2993457" />
+	<country countryCode="MD" countryName="Moldova" geonameId="617790" />
+	<country countryCode="ME" countryName="Montenegro" geonameId="3194884" />
+	<country countryCode="MF" countryName="Saint Martin" geonameId="3578421" />
+	<country countryCode="MG" countryName="Madagascar" geonameId="1062947" />
+	<country countryCode="MH" countryName="Marshall Islands" geonameId="2080185" />
+	<country countryCode="MK" countryName="Macedonia" geonameId="718075" />
+	<country countryCode="ML" countryName="Mali" geonameId="2453866" />
+	<country countryCode="MM" countryName="Myanmar [Burma]" geonameId="1327865" />
+	<country countryCode="MN" countryName="Mongolia" geonameId="2029969" />
+	<country countryCode="MO" countryName="Macao" geonameId="1821275" />
+	<country countryCode="MP" countryName="Northern Mariana Islands" geonameId="4041468" />
+	<country countryCode="MQ" countryName="Martinique" geonameId="3570311" />
+	<country countryCode="MR" countryName="Mauritania" geonameId="2378080" />
+	<country countryCode="MS" countryName="Montserrat" geonameId="3578097" />
+	<country countryCode="MT" countryName="Malta" geonameId="2562770" />
+	<country countryCode="MU" countryName="Mauritius" geonameId="934292" />
+	<country countryCode="MV" countryName="Maldives" geonameId="1282028" />
+	<country countryCode="MW" countryName="Malawi" geonameId="927384" />
+	<country countryCode="MX" countryName="Mexico" geonameId="3996063" />
+	<country countryCode="MY" countryName="Malaysia" geonameId="1733045" />
+	<country countryCode="MZ" countryName="Mozambique" geonameId="1036973" />
+	<country countryCode="NA" countryName="Namibia" geonameId="3355338" />
+	<country countryCode="NC" countryName="New Caledonia" geonameId="2139685" />
+	<country countryCode="NE" countryName="Niger" geonameId="2440476" />
+	<country countryCode="NF" countryName="Norfolk Island" geonameId="2155115" />
+	<country countryCode="NG" countryName="Nigeria" geonameId="2328926" />
+	<country countryCode="NI" countryName="Nicaragua" geonameId="3617476" />
+	<country countryCode="NL" countryName="Netherlands" geonameId="2750405" />
+	<country countryCode="NO" countryName="Norway" geonameId="3144096" />
+	<country countryCode="NP" countryName="Nepal" geonameId="1282988" />
+	<country countryCode="NR" countryName="Nauru" geonameId="2110425" />
+	<country countryCode="NU" countryName="Niue" geonameId="4036232" />
+	<country countryCode="NZ" countryName="New Zealand" geonameId="2186224" />
+	<country countryCode="OM" countryName="Oman" geonameId="286963" />
+	<country countryCode="PA" countryName="Panama" geonameId="3703430" />
+	<country countryCode="PE" countryName="Peru" geonameId="3932488" />
+	<country countryCode="PF" countryName="French Polynesia" geonameId="4030656" />
+	<country countryCode="PG" countryName="Papua New Guinea" geonameId="2088628" />
+	<country countryCode="PH" countryName="Philippines" geonameId="1694008" />
+	<country countryCode="PK" countryName="Pakistan" geonameId="1168579" />
+	<country countryCode="PL" countryName="Poland" geonameId="798544" />
+	<country countryCode="PM" countryName="Saint Pierre and Miquelon" geonameId="3424932" />
+	<country countryCode="PN" countryName="Pitcairn Islands" geonameId="4030699" />
+	<country countryCode="PR" countryName="Puerto Rico" geonameId="4566966" />
+	<country countryCode="PS" countryName="Palestine" geonameId="6254930" />
+	<country countryCode="PT" countryName="Portugal" geonameId="2264397" />
+	<country countryCode="PW" countryName="Palau" geonameId="1559582" />
+	<country countryCode="PY" countryName="Paraguay" geonameId="3437598" />
+	<country countryCode="QA" countryName="Qatar" geonameId="289688" />
+	<country countryCode="RE" countryName="Réunion" geonameId="935317" />
+	<country countryCode="RO" countryName="Romania" geonameId="798549" />
+	<country countryCode="RS" countryName="Serbia" geonameId="6290252" />
+	<country countryCode="RU" countryName="Russia" geonameId="2017370" />
+	<country countryCode="RW" countryName="Rwanda" geonameId="49518" />
+	<country countryCode="SA" countryName="Saudi Arabia" geonameId="102358" />
+	<country countryCode="SB" countryName="Solomon Islands" geonameId="2103350" />
+	<country countryCode="SC" countryName="Seychelles" geonameId="241170" />
+	<country countryCode="SD" countryName="Sudan" geonameId="366755" />
+	<country countryCode="SE" countryName="Sweden" geonameId="2661886" />
+	<country countryCode="SG" countryName="Singapore" geonameId="1880251" />
+	<country countryCode="SH" countryName="Saint Helena" geonameId="3370751" />
+	<country countryCode="SI" countryName="Slovenia" geonameId="3190538" />
+	<country countryCode="SJ" countryName="Svalbard and Jan Mayen" geonameId="607072" />
+	<country countryCode="SK" countryName="Slovakia" geonameId="3057568" />
+	<country countryCode="SL" countryName="Sierra Leone" geonameId="2403846" />
+	<country countryCode="SM" countryName="San Marino" geonameId="3168068" />
+	<country countryCode="SN" countryName="Senegal" geonameId="2245662" />
+	<country countryCode="SO" countryName="Somalia" geonameId="51537" />
+	<country countryCode="SR" countryName="Suriname" geonameId="3382998" />
+	<country countryCode="SS" countryName="South Sudan" geonameId="7909807" />
+	<country countryCode="ST" countryName="São Tomé and Príncipe" geonameId="2410758" />
+	<country countryCode="SV" countryName="El Salvador" geonameId="3585968" />
+	<country countryCode="SX" countryName="Sint Maarten" geonameId="7609695" />
+	<country countryCode="SY" countryName="Syria" geonameId="163843" />
+	<country countryCode="SZ" countryName="Swaziland" geonameId="934841" />
+	<country countryCode="TC" countryName="Turks and Caicos Islands" geonameId="3576916" />
+	<country countryCode="TD" countryName="Chad" geonameId="2434508" />
+	<country countryCode="TF" countryName="French Southern Territories" geonameId="1546748" />
+	<country countryCode="TG" countryName="Togo" geonameId="2363686" />
+	<country countryCode="TH" countryName="Thailand" geonameId="1605651" />
+	<country countryCode="TJ" countryName="Tajikistan" geonameId="1220409" />
+	<country countryCode="TK" countryName="Tokelau" geonameId="4031074" />
+	<country countryCode="TL" countryName="East Timor" geonameId="1966436" />
+	<country countryCode="TM" countryName="Turkmenistan" geonameId="1218197" />
+	<country countryCode="TN" countryName="Tunisia" geonameId="2464461" />
+	<country countryCode="TO" countryName="Tonga" geonameId="4032283" />
+	<country countryCode="TR" countryName="Turkey" geonameId="298795" />
+	<country countryCode="TT" countryName="Trinidad and Tobago" geonameId="3573591" />
+	<country countryCode="TV" countryName="Tuvalu" geonameId="2110297" />
+	<country countryCode="TW" countryName="Taiwan" geonameId="1668284" />
+	<country countryCode="TZ" countryName="Tanzania" geonameId="149590" />
+	<country countryCode="UA" countryName="Ukraine" geonameId="690791" />
+	<country countryCode="UG" countryName="Uganda" geonameId="226074" />
+	<country countryCode="UM" countryName="U.S. Minor Outlying Islands" geonameId="5854968" />
+	<country countryCode="UY" countryName="Uruguay" geonameId="3439705" />
+	<country countryCode="UZ" countryName="Uzbekistan" geonameId="1512440" />
+	<country countryCode="VA" countryName="Vatican City" geonameId="3164670" />
+	<country countryCode="VC" countryName="Saint Vincent and the Grenadines" geonameId="3577815" />
+	<country countryCode="VE" countryName="Venezuela" geonameId="3625428" />
+	<country countryCode="VG" countryName="British Virgin Islands" geonameId="3577718" />
+	<country countryCode="VI" countryName="U.S. Virgin Islands" geonameId="4796775" />
+	<country countryCode="VN" countryName="Vietnam" geonameId="1562822" />
+	<country countryCode="VU" countryName="Vanuatu" geonameId="2134431" />
+	<country countryCode="WF" countryName="Wallis and Futuna" geonameId="4034749" />
+	<country countryCode="WS" countryName="Samoa" geonameId="4034894" />
+	<country countryCode="XK" countryName="Kosovo" geonameId="831053" />
+	<country countryCode="YE" countryName="Yemen" geonameId="69543" />
+	<country countryCode="YT" countryName="Mayotte" geonameId="1024031" />
+	<country countryCode="ZA" countryName="South Africa" geonameId="953987" />
+	<country countryCode="ZM" countryName="Zambia" geonameId="895949" />
+	<country countryCode="ZW" countryName="Zimbabwe" geonameId="878675" />
+</countries>
